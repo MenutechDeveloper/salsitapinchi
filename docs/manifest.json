@@ -1,0 +1,22 @@
+{
+  "short_name": "Salsita Pinchi",
+  "name": "La Salsita Pinchi",
+  "icons": [
+    {
+      "src": "https://lasalsitapinchi.com/logo.jpg",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://lasalsitapinchi.com/logo.jpg",
+      "type": "image/png",
+      "sizes": "500x500"
+    }
+  ],
+  "start_url": "/index.html",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff"
+}
+
