@@ -451,8 +451,13 @@ min-height: 100vh;
   border: 0;
   display: block;
 }
-
+@media (max-width: 992px) {
+  .mapa iframe {
+    height: 400px;
+  }
+}
 /*END Mapa*/
+
 /*General para no hacer scroll*/
 body.no-scroll {
   overflow: hidden;
