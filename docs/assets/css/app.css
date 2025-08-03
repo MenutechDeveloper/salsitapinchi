@@ -385,30 +385,29 @@ min-height: 100vh;
     }
 /*END rasca y gana*/
 /*Mapa*/
-.contenedormapa {
-  height: calc(100vh - 110px); /* toda la pantalla menos la barra inferior */
-  box-sizing: border-box;
-  padding: 20px 16px;
-  font-family: 'Inter', sans-serif;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  text-align: center;
-  overflow: hidden;
+@media (min-width: 769px) {
+  .contenedor {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* centra verticalmente */
+    align-items: center;
+    min-height: calc(100vh - 110px); /* 100% altura menos la barra inferior */
+    padding-top: 60px; /* opcional, para margen extra arriba */
+    padding-bottom: 120px; /* para no tapar por la barra */
+    box-sizing: border-box;
+    color:white;
+  }
+
+  .contenedor h1 {
+    margin-top: 0;
+    font-size: 2rem;
+  }
+
+  .contenedor p {
+    margin-bottom: 1.5em;
+  }
 }
 
-.contenedormapa h1 {
-  font-size: 1.4rem;
-  margin: 0;
-}
-
-.contenedormapa p {
-  font-size: 0.95rem;
-  margin: 8px 0 16px;
-  line-height: 1.2;
-}
 
 .mapa {
   flex: 1;
