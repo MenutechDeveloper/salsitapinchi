@@ -399,6 +399,7 @@ min-height: 100vh;
       font-size: 14px;
     }
 /*END rasca y gana*/
+
 /*Mapa*/
 .contenedormapa {
   height: calc(100vh - 110px); /* toda la pantalla menos la barra inferior */
@@ -415,13 +416,14 @@ min-height: 100vh;
 }
 
 .contenedormapa h1 {
-  font-size: 1.4rem;
+  font-size: 1.8rem;
   margin: 0;
   color: white;
+  margin-top: 30px;
 }
 
 .contenedormapa p {
-  font-size: 0.95rem;
+  font-size: 1rem;
   margin: 8px 0 16px;
   line-height: 1.2;
   color: white;
@@ -438,7 +440,7 @@ min-height: 100vh;
 
 .mapa iframe {
   width: 100%;
-  height: 100%;
+  height: 90%;
   border: 0;
   display: block;
 }
