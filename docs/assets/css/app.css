@@ -426,3 +426,9 @@ min-height: 100vh;
   display: block;
 }
 /*END Mapa*/
+/*General para no hacer scroll*/
+body.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
+/*END general para no hacer scroll*/
