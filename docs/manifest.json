@@ -16,7 +16,7 @@
   "start_url": "/app.html",
   "display": "fullscreen",
   "orientation": "portrait",
-  "background_color": "#ffffff",
+  "background_color": "#100404",
   "theme_color": "#ffffff"
 }
 
