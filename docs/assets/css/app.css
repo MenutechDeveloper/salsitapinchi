@@ -395,16 +395,17 @@ min-height: 100vh;
     padding-top: 60px; /* opcional, para margen extra arriba */
     padding-bottom: 120px; /* para no tapar por la barra */
     box-sizing: border-box;
-    color:white;
   }
 
   .contenedor h1 {
     margin-top: 0;
     font-size: 2rem;
+    color: white;
   }
 
   .contenedor p {
     margin-bottom: 1.5em;
+    color: white;
   }
 }
 
