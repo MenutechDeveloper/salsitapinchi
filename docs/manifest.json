@@ -13,7 +13,7 @@
       "sizes": "500x500"
     }
   ],
-  "start_url": "/index.html",
+  "start_url": "/app.html",
   "display": "fullscreen",
   "orientation": "portrait",
   "background_color": "#ffffff",
