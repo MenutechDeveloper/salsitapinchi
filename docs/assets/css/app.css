@@ -397,7 +397,7 @@ min-height: 100vh;
 /*END rasca y gana*/
 /*Mapa*/
 @media (min-width: 769px) {
-  .contenedor {
+  .contenedormapa {
     display: flex;
     flex-direction: column;
     justify-content: center; /* centra verticalmente */
@@ -408,13 +408,13 @@ min-height: 100vh;
     box-sizing: border-box;
   }
 
-  .contenedor h1 {
+  .contenedormapa h1 {
     margin-top: 0;
     font-size: 2rem;
     color: white;
   }
 
-  .contenedor p {
+  .contenedormapa p {
     margin-bottom: 1.5em;
     color: white;
   }
