@@ -80,7 +80,7 @@
 
   function emitDust(x, y) {
     // Crea pequeñas partículas grises como "polvo" saliendo
-    const count = 6;
+    const count = 40;
     for (let i = 0; i < count; i++) {
       const size = Math.random() * 2 + 1;
       const offsetX = (Math.random() - 0.5) * 40;
@@ -105,7 +105,7 @@
     }
   }
 
-  function draw(e) {
+    function draw(e) {
     if (!isDrawing) return;
 
     const pos = getPointerPos(e);
@@ -124,13 +124,6 @@
         scratchSound.currentTime = 0;
       }
     }
-
-    // ✨ Polvo gris fuera de zona de rascado
-    const globalPos = canvas.getBoundingClientRect();
-    emitDust(globalPos.left + x, globalPos.top + y);
-
-    checkScratchPercent();
-  }
 
   function checkScratchPercent() {
     const imageData = ctx.getImageData(0, 0, w, h);
@@ -166,8 +159,6 @@
   function endDraw() {
     isDrawing = false;
     playSound = false;
-    scratchSound.pause();
-    scratchSound.currentTime = 0;
   }
 
   canvas.addEventListener('mousedown', startDraw);
@@ -212,6 +203,7 @@
 
 
 </html>
+
 
 
 
