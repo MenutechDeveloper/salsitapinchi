@@ -42,11 +42,9 @@
   <p>📸 Take a screenshot of the coupon and message us to claim your prize.</p>
   <a href="https://m.me/lasalsitapinchi" target="_blank">Claim Your Scratch Prize</a>
 </div>
-
 <!-- Confetti y sonido -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <audio id="scratch-sound" src="./assets/rasca.mp3" preload="auto"></audio>
-
 <script>
   const canvas = document.getElementById('scratch-canvas');
   const ctx = canvas.getContext('2d');
@@ -80,7 +78,7 @@
 
   function emitDust(x, y) {
     // Crea pequeñas partículas grises como "polvo" saliendo
-    const count = 40;
+    const count = 50;
     for (let i = 0; i < count; i++) {
       const size = Math.random() * 2 + 1;
       const offsetX = (Math.random() - 0.5) * 40;
@@ -105,25 +103,37 @@
     }
   }
 
-    function draw(e) {
-    if (!isDrawing) return;
+ let scratchTimeout; // ⏱️ controla la pausa del sonido
 
-    const pos = getPointerPos(e);
-    const x = pos.x;
-    const y = pos.y;
+function draw(e) {
+  if (!isDrawing) return;
 
-    ctx.beginPath();
-    ctx.arc(x, y, 20, 0, Math.PI * 2);
-    ctx.fill();
+  const pos = getPointerPos(e);
+  const x = pos.x;
+  const y = pos.y;
 
-    // 🎵 Sonido de rascar
-    if (playSound) {
-      if (scratchSound.paused) {
-        scratchSound.play();
-      } else {
-        scratchSound.currentTime = 0;
-      }
-    }
+  ctx.beginPath();
+  ctx.arc(x, y, 20, 0, Math.PI * 2);
+  ctx.fill();
+
+  // ✨ Polvo gris fuera de zona de rascado
+  const globalPos = canvas.getBoundingClientRect();
+  emitDust(globalPos.left + x, globalPos.top + y);
+
+  // 🎵 Sonido activo solo mientras hay movimiento
+  if (scratchSound.paused) {
+    scratchSound.play();
+  }
+
+  clearTimeout(scratchTimeout); // reinicia el temporizador
+  scratchTimeout = setTimeout(() => {
+    scratchSound.pause();
+    scratchSound.currentTime = 0;
+  }, 200); // si no se mueve por 200ms → detiene sonido
+
+  checkScratchPercent();
+}
+
 
   function checkScratchPercent() {
     const imageData = ctx.getImageData(0, 0, w, h);
@@ -159,6 +169,7 @@
   function endDraw() {
     isDrawing = false;
     playSound = false;
+    
   }
 
   canvas.addEventListener('mousedown', startDraw);
@@ -203,6 +214,7 @@
 
 
 </html>
+
 
 
 
