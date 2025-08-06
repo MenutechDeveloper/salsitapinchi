@@ -32,6 +32,37 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// Inicializa Firebase Messaging
+const messaging = firebase.messaging();
+
+// Solicita permiso para recibir notificaciones
+messaging.requestPermission()
+  .then(() => {
+    // Obtiene el token único del dispositivo
+    return messaging.getToken({
+      vapidKey: 'BBWGV_mbSdoU8vi0Al-d79Dg4o02LUncG8Gqt4FUnhvKLk5TdNi'
+    });
+  })
+  .then((currentToken) => {
+    if (currentToken) {
+      console.log('✅ Token del usuario:', currentToken);
+      // Puedes guardarlo en tu servidor o mostrarlo en pantalla
+    } else {
+      console.warn('⚠️ No se obtuvo token. Revisa los permisos.');
+    }
+  })
+  .catch((err) => {
+    console.error('❌ Error al obtener el token:', err);
+  });
+
+// Recibir mensajes cuando la PWA esté en primer plano
+messaging.onMessage((payload) => {
+  console.log('🔔 Mensaje recibido en primer plano:', payload);
+  new Notification(payload.notification.title, {
+    body: payload.notification.body,
+    icon: '/icon.png'
+  });
+});
 
 
 
