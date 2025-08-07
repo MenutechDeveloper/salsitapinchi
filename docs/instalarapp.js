@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     deferredPrompt = e;
 
-    // Opcional: podrías agregar una clase para indicar que está activo
+    // Opcional:clase para indicar que está activo
     installBtn.classList.add('instalable');
   });
 
