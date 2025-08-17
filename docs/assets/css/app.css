@@ -466,49 +466,41 @@ body.no-scroll {
 /*END general para no hacer scroll*/
 
 /*Animacion de descargar*/
+/* Contenedor de animación */
 #installAnimation {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   text-align: center;
-  z-index: 9999;
-  background: rgba(0,0,0,0.85);
-  padding: 20px;
-  border-radius: 20px;
-  color: white;
+  margin-top: 20px;
 }
 
 .logo-container {
   position: relative;
   width: 150px;
   height: 150px;
-  margin: auto;
-  overflow: hidden;
+  margin: 0 auto;
 }
 
-.logo-fill {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  animation: fillUp 5s linear forwards;
-}
-
-.logo-outline {
+.logo-container img {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
 }
 
-@keyframes fillUp {
-  from { top: 100%; }
-  to { top: 0; }
+/* Imagen de relleno, se va mostrando con clip-path */
+.logo-fill {
+  clip-path: inset(100% 0 0 0); /* oculto inicialmente */
+  transition: clip-path 3s linear;
+}
+
+.logo-outline {
+  z-index: 2;
+}
+
+#installText {
+  margin-top: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 /*END Animacion de descargar*/
