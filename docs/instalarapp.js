@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ANIMACIÓN
   const anim = document.getElementById('installAnimation');
   const text = document.getElementById('installText');
+  const fillLogo = document.querySelector('.logo-fill');
 
   // El navegador lanza este evento SOLO si la PWA es instalable
   window.addEventListener('beforeinstallprompt', (e) => {
@@ -19,38 +20,36 @@ document.addEventListener('DOMContentLoaded', () => {
   // Al hacer clic en el botón
   installBtn.addEventListener('click', async () => {
     if (deferredPrompt) {
-
-      // MOSTRAR ANIMACIÓN
-      if(anim && text){
-        anim.style.display = 'block';
-        text.textContent = 'Descargando...';
-
-        setTimeout(() => { text.textContent = 'Instalando...'; }, 2500);
-        setTimeout(() => { text.textContent = 'Descarga completada ✅'; }, 5000);
-
-        setTimeout(async () => {
-          anim.style.display = 'none';
-          deferredPrompt.prompt();
-          const choiceResult = await deferredPrompt.userChoice;
-
-          if (choiceResult.outcome === 'accepted') {
-            console.log('✅ User accepted to install the app');
-          } else {
-            console.log('❌ User declined the installation');
-          }
-
-          deferredPrompt = null;
-        }, 6000);
-
-        return;
-      }
-
-      // Si no hay animación disponible
+      // Mostrar prompt nativo primero
       deferredPrompt.prompt();
       const choiceResult = await deferredPrompt.userChoice;
 
-      if (choiceResult.outcome === 'accepted') console.log('✅ User accepted to install the app');
-      else console.log('❌ User declined the installation');
+      if (choiceResult.outcome === 'accepted') {
+        console.log('✅ User accepted to install the app');
+
+        // MOSTRAR ANIMACIÓN SOLO SI ACEPTÓ
+        if(anim && text && fillLogo){
+          anim.style.display = 'block';
+          text.textContent = 'Descargando...';
+
+          // Reiniciar progreso
+          fillLogo.style.clipPath = "inset(100% 0 0 0)";
+
+          // Progreso simulado
+          setTimeout(() => {
+            text.textContent = 'Instalando...';
+            fillLogo.style.transition = "clip-path 3s linear";
+            fillLogo.style.clipPath = "inset(0 0 0 0)";
+          }, 1000);
+
+          setTimeout(() => { text.textContent = 'Descarga completada ✅'; }, 4500);
+
+          setTimeout(() => { anim.style.display = 'none'; }, 6000);
+        }
+
+      } else {
+        console.log('❌ User declined the installation');
+      }
 
       deferredPrompt = null;
     } else {
@@ -77,8 +76,6 @@ messaging.onMessage((payload) => {
     icon: '/icon.png'
   });
 });
-
-
 
 
 
