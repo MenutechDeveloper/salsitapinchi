@@ -466,53 +466,70 @@ body.no-scroll {
 /*END general para no hacer scroll*/
 
 /*Animacion de descargar*/
-/* Overlay que cubre toda la app */
+/* ===========================
+   Animación de instalación PWA
+   =========================== */
+
 #installOverlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255,255,255,0.9); /* fondo translúcido */
-  display: none; /* oculto por defecto */
+  background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  z-index: 9999; /* siempre encima de todo */
+  z-index: 9999; /* Por encima de todo */
+  transition: opacity 0.3s ease;
+}
+
+#installOverlay.hidden {
+  display: none;
 }
 
 .logo-container {
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: 150px; /* Ajusta tamaño según tu logo */
+  height: 150px;
 }
 
-/* Ambas imágenes ocupan el mismo espacio */
-.logo-container img {
+/* Contenedor del relleno (fill) */
+.logo-fill-wrapper {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
-/* El relleno va debajo */
+/* Imagen de relleno */
 .logo-fill {
-  z-index: 1;
-  clip-path: inset(100% 0 0 0); /* oculto al inicio */
-  transition: clip-path 3s linear;
+  width: 100%;
+  height: 100%;
+  transform: translateY(-100%);
 }
 
-/* El trazo siempre encima */
+/* Imagen del trazo */
 .logo-outline {
-  z-index: 2;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  filter: grayscale(100%); /* Escala de grises para trazo */
 }
 
-#installText {
-  margin-top: 20px;
-  font-size: 1.3rem;
+/* Texto de animación */
+#installMessage {
+  margin-top: 15px;
+  font-size: 18px;
   font-weight: bold;
-  color: #333;
+  color: #fff;
+  text-align: center;
+  z-index: 10000;
+  font-family: sans-serif;
 }
 
 /*END Animacion de descargar*/
