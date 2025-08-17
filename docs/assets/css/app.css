@@ -466,19 +466,28 @@ body.no-scroll {
 /*END general para no hacer scroll*/
 
 /*Animacion de descargar*/
-/* Contenedor de animación */
-#installAnimation {
-  text-align: center;
-  margin-top: 20px;
+/* Overlay que cubre toda la app */
+#installOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.9); /* fondo translúcido */
+  display: none; /* oculto por defecto */
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 9999; /* siempre encima de todo */
 }
 
 .logo-container {
   position: relative;
-  width: 150px;
-  height: 150px;
-  margin: 0 auto;
+  width: 200px;
+  height: 200px;
 }
 
+/* Ambas imágenes ocupan el mismo espacio */
 .logo-container img {
   position: absolute;
   top: 0;
@@ -487,20 +496,23 @@ body.no-scroll {
   height: 100%;
 }
 
-/* Imagen de relleno, se va mostrando con clip-path */
+/* El relleno va debajo */
 .logo-fill {
-  clip-path: inset(100% 0 0 0); /* oculto inicialmente */
+  z-index: 1;
+  clip-path: inset(100% 0 0 0); /* oculto al inicio */
   transition: clip-path 3s linear;
 }
 
+/* El trazo siempre encima */
 .logo-outline {
   z-index: 2;
 }
 
 #installText {
-  margin-top: 15px;
-  font-size: 1.2rem;
+  margin-top: 20px;
+  font-size: 1.3rem;
   font-weight: bold;
+  color: #333;
 }
 
 /*END Animacion de descargar*/
