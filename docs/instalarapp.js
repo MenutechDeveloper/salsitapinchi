@@ -1,53 +1,59 @@
-let deferredPrompt;
+// ============================
+// Script de instalación de PWA
+// ============================
 
-document.addEventListener('DOMContentLoaded', () => {
-  const installBtn = document.getElementById('installBtn');
+let deferredPrompt; // Evento de instalación diferido
 
-  // Referencias a la animación
-  const overlay = document.getElementById('installOverlay');
-  const text = document.getElementById('installText');
-  const fillLogo = document.querySelector('.logo-fill');
-
-  // Guardar evento cuando el navegador detecta que la PWA es instalable
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.classList.add('instalable'); // opcional para estilos
-  });
-
-  installBtn.addEventListener('click', async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const choiceResult = await deferredPrompt.userChoice;
-
-      if (choiceResult.outcome === 'accepted') {
-        console.log('✅ User accepted to install the app');
-
-        // Mostrar overlay y animación
-        overlay.style.display = 'flex';
-        text.textContent = 'Descargando...';
-
-        // Reiniciar progreso
-        fillLogo.style.transition = "none";
-        fillLogo.style.clipPath = "inset(100% 0 0 0)";
-
-        setTimeout(() => {
-          text.textContent = 'Instalando...';
-          fillLogo.style.transition = "clip-path 3s linear";
-          fillLogo.style.clipPath = "inset(0 0 0 0)";
-        }, 800);
-
-        setTimeout(() => { text.textContent = 'Instalación completada ✅'; }, 4000);
-
-        setTimeout(() => { overlay.style.display = 'none'; }, 5500);
-
-      } else {
-        console.log('❌ User declined installation');
-      }
-
-      deferredPrompt = null;
-    } else {
-      alert('Esta app ya está instalada');
-    }
-  });
+// Detecta si la PWA es instalable
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById("installContainer").style.display = "block"; // Muestra el botón de instalación
 });
+
+// Cuando el usuario da clic en el botón instalar
+document.getElementById("installBtn").addEventListener("click", async () => {
+  if (!deferredPrompt) {
+    return;
+  }
+
+  // Mostrar animación de instalación falsa
+  showInstallAnimation();
+
+  // Esperar a que la animación se muestre antes de lanzar prompt real
+  setTimeout(async () => {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`El usuario eligió: ${outcome}`);
+    deferredPrompt = null;
+  }, 2500); // 2.5s para dar tiempo a que la animación se ejecute
+});
+
+// ====================================
+// Función para mostrar animación logo
+// ====================================
+function showInstallAnimation() {
+  const overlay = document.getElementById("installOverlay");
+  const fill = document.querySelector(".logo-fill");
+
+  // Mostrar overlay
+  overlay.classList.remove("hidden");
+
+  // Resetear fill
+  fill.style.transition = "none";
+  fill.style.transform = "translateY(-100%)";
+
+  // Forzar reflow para reiniciar animación
+  void fill.offsetWidth;
+
+  // Iniciar animación de relleno
+  fill.style.transition = "transform 2s linear";
+  fill.style.transform = "translateY(0)";
+
+  // Cuando termine la animación, ocultar overlay
+  fill.addEventListener("transitionend", () => {
+    setTimeout(() => {
+      overlay.classList.add("hidden"); // 👈 Oculta logo animado
+    }, 500); // medio segundo extra para que se vea bien terminado
+  }, { once: true });
+}
