@@ -85,14 +85,16 @@
    
 
 <!-- ANIMACIÓN DE DESCARGA -->
-<div id="installOverlay">
+<div id="installOverlay" class="hidden">
   <div class="logo-container">
-    <!-- PNG con relleno -->
-    <img src="https://menutechdeveloper.github.io/bddImg/assets/img/fillsalsita.png" class="logo-fill" />
-    <!-- PNG con trazo -->
-    <img src="https://menutechdeveloper.github.io/bddImg/assets/img/trazosalsita.png" class="logo-outline" />
+    <!-- Primero el relleno -->
+    <div class="logo-fill-wrapper">
+      <img src="logo-fill.png" alt="Logo Coloreado" class="logo-fill">
+    </div>
+    <!-- Después el trazo en escala de grises -->
+    <img src="logo-outline.png" alt="Logo Base" class="logo-outline">
   </div>
-  <p id="installText">Descargando...</p>
+  <p id="installMessage">Donwload...</p>
 </div>
 
 <!-- Grid de URLs -->
