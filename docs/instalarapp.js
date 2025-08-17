@@ -3,26 +3,54 @@ let deferredPrompt;
 document.addEventListener('DOMContentLoaded', () => {
   const installBtn = document.getElementById('installBtn');
 
+  // ANIMACIÓN
+  const anim = document.getElementById('installAnimation');
+  const text = document.getElementById('installText');
+
   // El navegador lanza este evento SOLO si la PWA es instalable
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
 
-    // Opcional:clase para indicar que está activo
+    // Opcional: clase para indicar que está activo
     installBtn.classList.add('instalable');
   });
 
   // Al hacer clic en el botón
   installBtn.addEventListener('click', async () => {
     if (deferredPrompt) {
+
+      // MOSTRAR ANIMACIÓN
+      if(anim && text){
+        anim.style.display = 'block';
+        text.textContent = 'Descargando...';
+
+        setTimeout(() => { text.textContent = 'Instalando...'; }, 2500);
+        setTimeout(() => { text.textContent = 'Descarga completada ✅'; }, 5000);
+
+        setTimeout(async () => {
+          anim.style.display = 'none';
+          deferredPrompt.prompt();
+          const choiceResult = await deferredPrompt.userChoice;
+
+          if (choiceResult.outcome === 'accepted') {
+            console.log('✅ User accepted to install the app');
+          } else {
+            console.log('❌ User declined the installation');
+          }
+
+          deferredPrompt = null;
+        }, 6000);
+
+        return;
+      }
+
+      // Si no hay animación disponible
       deferredPrompt.prompt();
       const choiceResult = await deferredPrompt.userChoice;
 
-   if (choiceResult.outcome === 'accepted') {
-  console.log('✅ User accepted to install the app');
-} else {
-  console.log('❌ User declined the installation');
-}
+      if (choiceResult.outcome === 'accepted') console.log('✅ User accepted to install the app');
+      else console.log('❌ User declined the installation');
 
       deferredPrompt = null;
     } else {
@@ -37,23 +65,9 @@ const messaging = firebase.messaging();
 
 // Solicita permiso para recibir notificaciones
 messaging.requestPermission()
-  .then(() => {
-    // Obtiene el token único del dispositivo
-    return messaging.getToken({
-      vapidKey: 'BBWGV_mbSdoU8vi0Al-d79Dg4o02LUncG8Gqt4FUnhvKLk5TdNi'
-    });
-  })
-  .then((currentToken) => {
-    if (currentToken) {
-      console.log('✅ Token del usuario:', currentToken);
-      // Puedes guardarlo en tu servidor o mostrarlo en pantalla
-    } else {
-      console.warn('⚠️ No se obtuvo token. Revisa los permisos.');
-    }
-  })
-  .catch((err) => {
-    console.error('❌ Error al obtener el token:', err);
-  });
+  .then(() => messaging.getToken({ vapidKey: 'BBWGV_mbSdoU8vi0Al-d79Dg4o02LUncG8Gqt4FUnhvKLk5TdNi' }))
+  .then((currentToken) => { if(currentToken) console.log('✅ Token del usuario:', currentToken); })
+  .catch((err) => console.error('❌ Error al obtener el token:', err));
 
 // Recibir mensajes cuando la PWA esté en primer plano
 messaging.onMessage((payload) => {
@@ -63,6 +77,7 @@ messaging.onMessage((payload) => {
     icon: '/icon.png'
   });
 });
+
 
 
 
