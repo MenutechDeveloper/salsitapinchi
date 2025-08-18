@@ -488,32 +488,24 @@ body.no-scroll {
   height: 200px;
 }
 
-/* Fill sobre el trazo */
+/* Fill sobre el trazo, oculto al inicio */
 .logo-fill-wrapper {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 2;
   overflow: hidden;
+  z-index: 2; /* fill sobre trazo */
 }
 
-/* Fill revelado con máscara animada */
+/* Fill que se irá mostrando con efecto wave */
 .logo-fill {
   width: 100%;
   height: auto;
-  display: block;
-  opacity: 1;
-  -webkit-mask-image: linear-gradient(to top, black 0%, transparent 0%);
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: bottom;
-  -webkit-mask-size: 100% 0%;
-  mask-image: linear-gradient(to top, black 0%, transparent 0%);
-  mask-repeat: no-repeat;
-  mask-position: bottom;
-  mask-size: 100% 0%;
-  transition: mask-size 3s linear;
+  transform: translateY(100%);
+  opacity: 0;
+  animation: fillWave 3s forwards;
 }
 
 /* Trazo gris */
@@ -532,6 +524,29 @@ body.no-scroll {
   font-size: 1.2rem;
   font-weight: bold;
   color: #333;
+}
+
+/* Animación wave del fill */
+@keyframes fillWave {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(40%);
+    opacity: 0.6;
+  }
+  80% {
+    transform: translateY(10%);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
 }
 
 /*END Animacion de descargar*/
