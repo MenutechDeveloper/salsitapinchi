@@ -12,8 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-
-    // Opcional: clase para indicar que está activo
     installBtn.classList.add('instalable');
   });
 
@@ -32,11 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
           anim.style.display = 'flex';
           text.textContent = 'Descargando...';
 
-          // Animación del fill de abajo hacia arriba
+          // Animación: fill crece de abajo hacia arriba
           fillWrapper.style.height = '0%';
+          fillWrapper.style.transition = 'height 3s ease-in-out';
           setTimeout(() => { 
             text.textContent = 'Instalando...'; 
-            fillWrapper.style.transition = 'height 3s ease-in-out';
             fillWrapper.style.height = '100%'; 
           }, 500);
 
@@ -55,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       deferredPrompt = null;
     } else {
-      // Si no hay instalación disponible
       alert('This app is already installed');
     }
   });
@@ -63,14 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Inicializa Firebase Messaging
 const messaging = firebase.messaging();
-
-// Solicita permiso para recibir notificaciones
 messaging.requestPermission()
   .then(() => messaging.getToken({ vapidKey: 'BBWGV_mbSdoU8vi0Al-d79Dg4o02LUncG8Gqt4FUnhvKLk5TdNi' }))
   .then((currentToken) => { if(currentToken) console.log('✅ Token del usuario:', currentToken); })
   .catch((err) => console.error('❌ Error al obtener el token:', err));
 
-// Recibir mensajes cuando la PWA esté en primer plano
 messaging.onMessage((payload) => {
   console.log('🔔 Mensaje recibido en primer plano:', payload);
   new Notification(payload.notification.title, {
