@@ -3,11 +3,10 @@ let deferredPrompt;
 document.addEventListener('DOMContentLoaded', () => {
   const installBtn = document.getElementById('installBtn');
 
-  // ANIMACIÓN
+  // Elementos de animación
   const anim = document.getElementById('installAnimation');
   const text = document.getElementById('installText');
-  const fillWrapper = document.querySelector('.logo-fill-wrapper');
-  const fillImg = document.querySelector('.logo-fill');
+  const video = document.getElementById('installVideo');
 
   // Evento que detecta si la PWA se puede instalar
   window.addEventListener('beforeinstallprompt', (e) => {
@@ -19,26 +18,32 @@ document.addEventListener('DOMContentLoaded', () => {
   // Al hacer clic en el botón de instalación
   installBtn.addEventListener('click', async () => {
     if (deferredPrompt) {
-      // Mostrar prompt primero
       deferredPrompt.prompt();
       const choiceResult = await deferredPrompt.userChoice;
 
       if (choiceResult.outcome === 'accepted') {
         console.log('✅ User accepted to install the app');
 
-        // MOSTRAR ANIMACIÓN solo si aceptó instalar
-        if(anim && text && fillWrapper && fillImg){
+        // MOSTRAR ANIMACIÓN
+        if(anim && text && video){
           anim.style.display = 'flex';
-          text.textContent = 'Descargando...';
+          text.textContent = 'Instalando...';
 
-          // Reiniciar animación
-          fillImg.style.animation = 'none';
-          void fillImg.offsetWidth; // reinicia la animación
-          fillImg.style.animation = 'fillWave 3s forwards';
+          // Reiniciar video
+          video.currentTime = 0;
+          video.style.opacity = "1";
+          video.play();
 
-          setTimeout(() => { text.textContent = 'Instalando...'; }, 500);
-          setTimeout(() => { text.textContent = 'Instalación completada ✅'; }, 3500);
-          setTimeout(() => { anim.style.display = 'none'; }, 5000);
+          // Fade out después de 3s
+          setTimeout(() => {
+            video.style.opacity = "0";
+            text.textContent = 'Instalación completada ✅';
+          }, 3000);
+
+          // Ocultar animación después de 4s
+          setTimeout(() => {
+            anim.style.display = 'none';
+          }, 4000);
         }
 
       } else {
