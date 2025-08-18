@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const anim = document.getElementById('installAnimation');
   const text = document.getElementById('installText');
   const fillWrapper = document.querySelector('.logo-fill-wrapper');
+  const fillImg = document.querySelector('.logo-fill');
 
   // Evento que detecta si la PWA se puede instalar
   window.addEventListener('beforeinstallprompt', (e) => {
@@ -26,20 +27,22 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('✅ User accepted to install the app');
 
         // MOSTRAR ANIMACIÓN solo si aceptó instalar
-        if(anim && text && fillWrapper){
+        if (anim && text && fillWrapper && fillImg) {
           anim.style.display = 'flex';
           text.textContent = 'Descargando...';
 
-          // Animación: fill crece de abajo hacia arriba
-          fillWrapper.style.height = '0%';
-          fillWrapper.style.transition = 'height 3s ease-in-out';
-          setTimeout(() => { 
-            text.textContent = 'Instalando...'; 
-            fillWrapper.style.height = '100%'; 
+          // Animación tipo “revelado” del fill
+          fillImg.style.webkitMaskSize = '100% 0%';
+          fillImg.style.maskSize = '100% 0%';
+
+          setTimeout(() => {
+            text.textContent = 'Instalando...';
+            fillImg.style.webkitMaskSize = '100% 100%';
+            fillImg.style.maskSize = '100% 100%';
           }, 500);
 
-          setTimeout(() => { 
-            text.textContent = 'Instalación completada ✅'; 
+          setTimeout(() => {
+            text.textContent = 'Instalación completada ✅';
           }, 3500);
 
           setTimeout(() => {
@@ -60,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Inicializa Firebase Messaging
 const messaging = firebase.messaging();
+
 messaging.requestPermission()
   .then(() => messaging.getToken({ vapidKey: 'BBWGV_mbSdoU8vi0Al-d79Dg4o02LUncG8Gqt4FUnhvKLk5TdNi' }))
   .then((currentToken) => { if(currentToken) console.log('✅ Token del usuario:', currentToken); })
