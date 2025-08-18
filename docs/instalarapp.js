@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Al hacer clic en el botón de instalación
   installBtn.addEventListener('click', async () => {
     if (deferredPrompt) {
-      // Muestra el prompt primero
+      // Mostrar prompt primero
       deferredPrompt.prompt();
       const choiceResult = await deferredPrompt.userChoice;
 
@@ -27,33 +27,23 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('✅ User accepted to install the app');
 
         // MOSTRAR ANIMACIÓN solo si aceptó instalar
-        if (anim && text && fillWrapper && fillImg) {
+        if(anim && text && fillWrapper && fillImg){
           anim.style.display = 'flex';
           text.textContent = 'Descargando...';
 
-          // Animación tipo “revelado” del fill
-          fillImg.style.webkitMaskSize = '100% 0%';
-          fillImg.style.maskSize = '100% 0%';
+          // Reiniciar animación
+          fillImg.style.animation = 'none';
+          void fillImg.offsetWidth; // reinicia la animación
+          fillImg.style.animation = 'fillWave 3s forwards';
 
-          setTimeout(() => {
-            text.textContent = 'Instalando...';
-            fillImg.style.webkitMaskSize = '100% 100%';
-            fillImg.style.maskSize = '100% 100%';
-          }, 500);
-
-          setTimeout(() => {
-            text.textContent = 'Instalación completada ✅';
-          }, 3500);
-
-          setTimeout(() => {
-            anim.style.display = 'none';
-          }, 5000);
+          setTimeout(() => { text.textContent = 'Instalando...'; }, 500);
+          setTimeout(() => { text.textContent = 'Instalación completada ✅'; }, 3500);
+          setTimeout(() => { anim.style.display = 'none'; }, 5000);
         }
 
       } else {
         console.log('❌ User declined the installation');
       }
-
       deferredPrompt = null;
     } else {
       alert('This app is already installed');
@@ -63,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Inicializa Firebase Messaging
 const messaging = firebase.messaging();
-
 messaging.requestPermission()
   .then(() => messaging.getToken({ vapidKey: 'BBWGV_mbSdoU8vi0Al-d79Dg4o02LUncG8Gqt4FUnhvKLk5TdNi' }))
   .then((currentToken) => { if(currentToken) console.log('✅ Token del usuario:', currentToken); })
