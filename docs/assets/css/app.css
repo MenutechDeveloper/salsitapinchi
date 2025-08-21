@@ -498,21 +498,20 @@ body.no-scroll {
   object-fit: contain;
 }
 
-/* Loader circular encima de la imagen */
-.loader {
+/* Loader circular de progreso */
+.progress-ring {
   position: absolute;
-  width: 80px;
-  height: 80px;
-  border: 6px solid #ccc;
-  border-top: 6px solid #333;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+  width: 120px;
+  height: 120px;
+  transform: rotate(-90deg); /* iniciar desde arriba */
 }
 
-/* Animación del loader */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.progress-ring circle {
+  fill: transparent;
+  stroke: #666; /* gris inicial */
+  stroke-width: 8;
+  stroke-dasharray: 0 999; /* inicial sin progreso */
+  transition: stroke-dasharray 3s linear, stroke 0.5s ease;
 }
 
 /* Texto de estado */
@@ -522,6 +521,4 @@ body.no-scroll {
   font-weight: bold;
   color: #333;
 }
-
-
 /*END Animacion de descargar*/
