@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Elementos de animación
   const anim = document.getElementById('installAnimation');
   const text = document.getElementById('installText');
-  const loader = document.querySelector('.loader');
+  const progressCircle = document.getElementById('progressCircle');
 
   // Evento que detecta si la PWA se puede instalar
   window.addEventListener('beforeinstallprompt', (e) => {
@@ -25,20 +25,28 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('✅ User accepted to install the app');
 
         // MOSTRAR ANIMACIÓN
-        if(anim && text && loader){
+        if(anim && text && progressCircle){
           anim.style.display = 'flex';
           text.textContent = 'Installing...';
 
-          // Después de 3s cambiamos el texto
+          // Resetear progreso
+          progressCircle.setAttribute('stroke-dasharray', `0 999`);
+          progressCircle.setAttribute('stroke', '#666'); // gris inicial
+
+          // Iniciar animación de progreso (3s)
           setTimeout(() => {
-            text.textContent = 'App installed ✅';
-            loader.style.display = 'none'; // ocultar loader
+            progressCircle.setAttribute('stroke-dasharray', `380 999`); // círculo casi completo
+          }, 50);
+
+          // Después de 3s cambiamos el texto y el color a verde
+          setTimeout(() => {
+            text.textContent = 'App installed';
+            progressCircle.setAttribute('stroke', '#28a745'); // verde elegante
           }, 3000);
 
           // Ocultar animación después de 4s
           setTimeout(() => {
             anim.style.display = 'none';
-            loader.style.display = 'block'; // reiniciar loader para la próxima vez
           }, 4000);
         }
 
@@ -62,7 +70,6 @@ messaging.requestPermission()
 messaging.onMessage((payload) => {
   console.log('🔔 Foreground message received:', payload);
   new Notification(payload.notification.title, {
-    body: payload.notification.body,
-    icon: '/icon.png'
+    body: payload.notification.body
   });
 });
