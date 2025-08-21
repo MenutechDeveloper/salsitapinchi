@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Elementos de animación
   const anim = document.getElementById('installAnimation');
   const text = document.getElementById('installText');
-  const video = document.getElementById('installVideo');
+  const loader = document.querySelector('.loader');
 
   // Evento que detecta si la PWA se puede instalar
   window.addEventListener('beforeinstallprompt', (e) => {
@@ -25,24 +25,20 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('✅ User accepted to install the app');
 
         // MOSTRAR ANIMACIÓN
-        if(anim && text && video){
+        if(anim && text && loader){
           anim.style.display = 'flex';
-          text.textContent = 'Instalando...';
+          text.textContent = 'Installing...';
 
-          // Reiniciar video
-          video.currentTime = 0;
-          video.style.opacity = "1";
-          video.play();
-
-          // Fade out después de 3s
+          // Después de 3s cambiamos el texto
           setTimeout(() => {
-            video.style.opacity = "0";
-            text.textContent = 'Instalación completada ✅';
+            text.textContent = 'App installed ✅';
+            loader.style.display = 'none'; // ocultar loader
           }, 3000);
 
           // Ocultar animación después de 4s
           setTimeout(() => {
             anim.style.display = 'none';
+            loader.style.display = 'block'; // reiniciar loader para la próxima vez
           }, 4000);
         }
 
@@ -60,11 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
 const messaging = firebase.messaging();
 messaging.requestPermission()
   .then(() => messaging.getToken({ vapidKey: 'BBWGV_mbSdoU8vi0Al-d79Dg4o02LUncG8Gqt4FUnhvKLk5TdNi' }))
-  .then((currentToken) => { if(currentToken) console.log('✅ Token del usuario:', currentToken); })
-  .catch((err) => console.error('❌ Error al obtener el token:', err));
+  .then((currentToken) => { if(currentToken) console.log('✅ User token:', currentToken); })
+  .catch((err) => console.error('❌ Error getting token:', err));
 
 messaging.onMessage((payload) => {
-  console.log('🔔 Mensaje recibido en primer plano:', payload);
+  console.log('🔔 Foreground message received:', payload);
   new Notification(payload.notification.title, {
     body: payload.notification.body,
     icon: '/icon.png'
